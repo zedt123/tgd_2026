@@ -201,8 +201,6 @@ def format_particle_sweep_table(rows: List[Dict[str, Any]]) -> str:
       - num_particles
       - swd_mean
       - swd_std
-      - consistency_mse_mean
-      - consistency_mse_std
     """
     table = prettytable.PrettyTable()
     table.field_names = [
@@ -210,8 +208,6 @@ def format_particle_sweep_table(rows: List[Dict[str, Any]]) -> str:
         "num_particles",
         "swd_mean",
         "swd_std",
-        "consistency_mse_mean",
-        "consistency_mse_std",
     ]
 
     for row in rows:
@@ -221,8 +217,6 @@ def format_particle_sweep_table(rows: List[Dict[str, Any]]) -> str:
                 row["num_particles"],
                 f'{row["swd_mean"]:.6g}',
                 f'{row["swd_std"]:.6g}',
-                f'{row["consistency_mse_mean"]:.6g}',
-                f'{row["consistency_mse_std"]:.6g}',
             ]
         )
 
@@ -237,8 +231,6 @@ def format_fixed_particle_table(rows: List[Dict[str, Any]]) -> str:
       - num_particles
       - swd_mean
       - swd_std
-      - consistency_mse_mean
-      - consistency_mse_std
     """
     table = prettytable.PrettyTable()
     table.field_names = [
@@ -246,8 +238,6 @@ def format_fixed_particle_table(rows: List[Dict[str, Any]]) -> str:
         "num_particles",
         "swd_mean",
         "swd_std",
-        "consistency_mse_mean",
-        "consistency_mse_std",
     ]
 
     for row in rows:
@@ -257,8 +247,6 @@ def format_fixed_particle_table(rows: List[Dict[str, Any]]) -> str:
                 row["num_particles"],
                 f'{row["swd_mean"]:.6g}',
                 f'{row["swd_std"]:.6g}',
-                f'{row["consistency_mse_mean"]:.6g}',
-                f'{row["consistency_mse_std"]:.6g}',
             ]
         )
 

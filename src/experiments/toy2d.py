@@ -252,8 +252,6 @@ def build_particle_sweep_table(
                 "num_particles": 1,
                 "swd_mean": ...,
                 "swd_std": ...,
-                "consistency_mse_mean": ...,
-                "consistency_mse_std": ...,
             },
             ...
         ]
@@ -271,8 +269,6 @@ def build_particle_sweep_table(
                 "num_particles": int(run_result["num_particles"]),
                 "swd_mean": float(metrics["swd/mean"]),
                 "swd_std": float(metrics["swd/std"]),
-                "consistency_mse_mean": float(metrics["consistency_mse/mean"]),
-                "consistency_mse_std": float(metrics["consistency_mse/std"]),
             }
 
             rows.append(row)
@@ -299,8 +295,6 @@ def build_fixed_particle_table(
                 "num_particles": int,
                 "swd_mean": float,
                 "swd_std": float,
-                "consistency_mse_mean": float,
-                "consistency_mse_std": float,
             },
             ...
         ]
@@ -328,8 +322,6 @@ def build_fixed_particle_table(
                 "num_particles": int(num_particles),
                 "swd_mean": float(metrics["swd/mean"]),
                 "swd_std": float(metrics["swd/std"]),
-                "consistency_mse_mean": float(metrics["consistency_mse/mean"]),
-                "consistency_mse_std": float(metrics["consistency_mse/std"]),
             }
         )
 

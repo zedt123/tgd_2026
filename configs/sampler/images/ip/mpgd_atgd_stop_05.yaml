@@ -8,8 +8,8 @@ process_schedule:
   kwargs: { num_steps: 256, t_max: 100.0, t_min: 0.1, rho: 7.0 }
 
 annealing:
-  name: sigma
-  kwargs: { num_steps: 256, beta_min: 0.0, beta_max: 1.0, alpha: 1.0 }
+  name: uniform
+  kwargs: { num_steps: 256, beta_min: 0.0, beta_max: 1.0 }
 
 x0_solver:
   schedule:

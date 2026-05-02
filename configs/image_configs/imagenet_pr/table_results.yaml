@@ -1,0 +1,80 @@
+# @package _global_
+
+out_dir: results/imagenet_pr/samples
+device: cuda
+save_images: false
+save_traj: false
+
+eval:
+  paired_metrics: ["psnr", "lpips", "ssim"]
+  paired_metric_kwargs:
+    lpips:
+      batch_size: 64
+    psnr:
+      data_range: 1.0
+    consistency_mse:
+      reduction: mean
+
+  dist_metrics: []
+  dist_metric_kwargs: {}
+
+defaults:
+  - /run: base
+  - /data: ffhq
+  - /model: ffhq256
+  - /sampler: images/pr/mcmc_atgd_stop_08      # overwritten below
+  - /operator: phase_retrieval
+  - _self_
+
+run:
+  total_data: 100
+  num_particles: 1      # fallback default; algorithm-specific values below can override this
+  batch_size: 16
+  device: cuda
+  seed: 3
+  save_traj: false
+  traj_steps: 1
+  particles_to_save: 1
+
+pick:
+  top_k: 10
+  rank_metric: lpips                  # lpips | psnr | consistency_mse
+  rank_pair: ["DAPS-4", "A-TGD"]      # names of the two algorithms used to rank images
+  gap_mode: abs                       # check both sides
+
+algorithms:   
+  - name: A-TGD
+    sweep_kind: atgd
+    num_particles: 4
+    sweep_value: 5000
+    selection_rule: first
+    overrides:
+      - sampler=images/pr/mcmc_atgd_stop_08
+
+  - name: DPS
+    sweep_kind: mpgd                 
+    num_particles: 1
+    sweep_value: 7860
+    selection_rule: first             # first | measurement_best | best_lpips | best_psnr
+    overrides:
+      - sampler=images/dps
+
+  - name: DAPS
+    sweep_kind: outer_inner
+    num_particles: 1
+    sweep_value: 15420
+    selection_rule: first
+    overrides:
+      - sampler=images/daps
+
+  - name: DAPS-4
+    sweep_kind: outer_inner
+    num_particles: 4
+    sweep_value: 4300
+    selection_rule: measurement_best
+    overrides:
+      - sampler=images/daps  
+
+outputs:
+  root_config_yaml: results_config.yaml
+  summary_json: results_summary.json

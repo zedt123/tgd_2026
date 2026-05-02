@@ -22,7 +22,7 @@ eval:
 defaults:
   - /data: ffhq
   - /model: ffhq256
-  - /sampler: ffhq/mpgd_tgd # fallback default; sampler-specific value below overrides this
+  - /sampler: images/pr/mcmc_atgd_stop_05      # overwritten below
   - /operator: phase_retrieval
   - _self_
 

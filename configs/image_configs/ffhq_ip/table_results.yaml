@@ -1,6 +1,6 @@
 # @package _global_
 
-out_dir: neurips_2026/ffhq_ip_samples
+out_dir: results/ffhq_ip/samples
 device: cuda
 save_images: false
 save_traj: false
@@ -21,8 +21,8 @@ eval:
 defaults:
   - /data: ffhq
   - /model: ffhq256
-  - /sampler: ffhq_ip/mpgd_tgd # fallback default; algorithm-specific values below can override this
-  - /operator: large_resolution/inpaint_box
+  - /sampler: images/ip/mpgd_atgd_stop_05          # overwritten below
+  - /operator: inpaint_box
   - _self_
 
 run:
@@ -36,9 +36,9 @@ run:
   particles_to_save: 1
 
 pick:
-  top_k: 5
+  top_k: 10
   rank_metric: lpips                  # lpips | psnr
-  rank_pair: ["DAPS-4", "A-TGD"]        # names of the two algorithms used to rank images
+  rank_pair: ["DAPS-4", "A-TGD"]      # names of the two algorithms used to rank images
   gap_mode: abs                       # check both sides
 
 algorithms:
@@ -48,7 +48,7 @@ algorithms:
     sweep_value: 596
     selection_rule: first             # first | measurement_best | best_lpips | best_psnr
     overrides:
-      - sampler=ffhq_ip/dps_daps
+      - sampler=images/dps
 
   - name: DAPS
     sweep_kind: outer_inner
@@ -56,7 +56,7 @@ algorithms:
     sweep_value: 1196
     selection_rule: first
     overrides:
-      - sampler=ffhq_ip/mcmc_daps
+      - sampler=images/daps
 
   - name: DAPS-4
     sweep_kind: outer_inner
@@ -64,15 +64,7 @@ algorithms:
     sweep_value: 308
     selection_rule: measurement_best
     overrides:
-      - sampler=ffhq_ip/mcmc_daps
-
-  - name: TGD
-    sweep_kind: outer_inner
-    num_particles: 4
-    sweep_value: 324
-    selection_rule: measurement_best
-    overrides:
-      - sampler=ffhq_ip/mpgd_tgd_10
+      - sampler=images/daps
 
   - name: A-TGD
     sweep_kind: atgd
@@ -80,7 +72,7 @@ algorithms:
     sweep_value: 512
     selection_rule: first
     overrides:
-      - sampler=ffhq_ip/mpgd_atgd
+      - sampler=images/ip/mpgd_atgd_stop_05
 
 outputs:
   root_config_yaml: results_config.yaml

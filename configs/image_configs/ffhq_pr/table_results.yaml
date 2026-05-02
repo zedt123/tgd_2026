@@ -6,7 +6,7 @@ save_images: false
 save_traj: false
 
 eval:
-  paired_metrics: ["psnr", "lpips", "ssim","consistency_mse"]
+  paired_metrics: ["psnr", "lpips", "ssim"]
   paired_metric_kwargs:
     lpips:
       batch_size: 64
@@ -22,8 +22,8 @@ defaults:
   - /run: base
   - /data: ffhq
   - /model: ffhq256
-  - /sampler: ffhq/mpgd_tgd
-  - /operator: large_resolution/phase_retrieval
+  - /sampler: images/pr/mcmc_atgd_stop_05      # overwritten below
+  - /operator: phase_retrieval
   - _self_
 
 run:
@@ -39,7 +39,7 @@ run:
 pick:
   top_k: 10
   rank_metric: lpips                  # lpips | psnr | consistency_mse
-  rank_pair: ["DAPS-4", "A-TGD"]        # names of the two algorithms used to rank images
+  rank_pair: ["DAPS-4", "A-TGD"]      # names of the two algorithms used to rank images
   gap_mode: abs                       # check both sides
 
 algorithms:   
@@ -49,22 +49,15 @@ algorithms:
     sweep_value: 256
     selection_rule: first
     overrides:
-      - sampler=ffhq/daps/mcmc_atgd
+      - sampler=images/pr/mcmc_atgd_stop_05
 
-  - name: TGD
-    sweep_kind: outer_inner
-    num_particles: 4
-    sweep_value: 216
-    selection_rule: measurement_best
-    overrides:
-      - sampler=ffhq/daps/mcmc_tgd 
   - name: DPS
     sweep_kind: mpgd                 
     num_particles: 1
     sweep_value: 404
     selection_rule: first             # first | measurement_best | best_lpips | best_psnr
     overrides:
-      - sampler=ffhq/daps/dps_daps
+      - sampler=images/dps
 
   - name: DAPS
     sweep_kind: outer_inner
@@ -72,7 +65,7 @@ algorithms:
     sweep_value: 636
     selection_rule: first
     overrides:
-      - sampler=ffhq/daps/mcmc_daps
+      - sampler=images/daps
 
   - name: DAPS-4
     sweep_kind: outer_inner
@@ -80,7 +73,7 @@ algorithms:
     sweep_value: 164
     selection_rule: measurement_best
     overrides:
-      - sampler=ffhq/daps/mcmc_daps  
+      - sampler=images/daps  
 
 outputs:
   root_config_yaml: results_config.yaml
