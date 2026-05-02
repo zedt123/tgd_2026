@@ -27,27 +27,11 @@ def run_particle_sweep_experiment(
 ) -> Dict[str, Any]:
     """
     Run the particle-count sweep for a single algorithm override.
-
-    Returns a dictionary with:
-      - algorithm name
-      - override
-      - one entry per particle count
-      - optional in-memory trajectory payload for a single y index
-      - optional posterior overlay payload for all y conditions
     """
     algorithm = Path(override.split("=", 1)[1].strip()).name
 
     particle_counts = list(sweep_cfg.study.particle_counts)
     target_total_particles = int(sweep_cfg.study.target_total_particles)
-
-    traj_algorithms = {
-        str(sweep_cfg.trajectory.algorithm_main),
-        str(sweep_cfg.trajectory.algorithm_baseline),
-    }
-    traj_num_particles = int(sweep_cfg.trajectory.num_particles)
-    traj_num_panels = int(sweep_cfg.trajectory.num_panels)
-    traj_num_points = int(sweep_cfg.trajectory.num_points)
-    traj_y_index = int(sweep_cfg.trajectory.y_index)
 
     posterior_overlay_cfg = sweep_cfg.study.get("posterior_overlay", None)
 

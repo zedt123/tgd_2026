@@ -212,8 +212,13 @@ run*.txt
 # Model weights
 model_weights/
 
+# Data
+data/test-ffhq
+data/test-imagenet
+
 # Ignore experiment outputs
 results/
+outputs/
 
 # Ignore job log files
 *.err

@@ -36,7 +36,7 @@ operator:
     strength: 0.8
   proposal: time_proposal 
 
-# study:
+study:
   particle_counts: [1, 2, 4, 8, 16, 32, 64, 128] 
   target_total_particles: 10000
   gt_reference_samples: 20000 

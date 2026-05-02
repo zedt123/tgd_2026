@@ -3,7 +3,7 @@ from omegaconf import DictConfig, OmegaConf
 
 from src.registry import DATASET
 
-from . import images, null_data, toy2d
+from . import images, toy2d
 from .base import DiffusionData
 
 
