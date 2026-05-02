@@ -1,6 +1,6 @@
 name: atgd
 kwargs:
-  ess_threshold: 1.0
+  ess_threshold: 0.0
   stop: 0.1
 
 process_schedule:
