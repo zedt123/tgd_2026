@@ -83,10 +83,6 @@ def run_particle_sweep_experiment(
         n_runs = (target_total_particles + actual_k - 1) // actual_k
         pooled_samples = []
 
-        should_collect_trajectory = (
-            algorithm in traj_algorithms and logical_k == traj_num_particles
-        )
-
         traj_chunks = []
         traj_times = None
         collected_traj_particles = 0
@@ -103,15 +99,8 @@ def run_particle_sweep_experiment(
             desc=f"[{algorithm}] K={logical_k} (actual={actual_k}) pooling",
             leave=False,
         ):
-            need_more_traj = (
-                should_collect_trajectory
-                and collected_traj_particles < traj_num_points
-            )
 
             particles_for_traj = 0
-            if need_more_traj:
-                remaining = traj_num_points - collected_traj_particles
-                particles_for_traj = min(actual_k, remaining)
 
             if y is not None and int(exp_cfg.run.total_data) > int(exp_cfg.run.batch_size):
                 out = sampler.batch_sample(
@@ -119,16 +108,16 @@ def run_particle_sweep_experiment(
                     y=y,
                     B_chunk=int(exp_cfg.run.batch_size),
                     rng=rng,
-                    traj_steps=traj_num_panels if need_more_traj else 0,
-                    particles_for_traj=particles_for_traj if need_more_traj else 0,
+                    traj_steps=0,
+                    particles_for_traj=0,
                 )
             else:
                 out = sampler.sample(
                     N=actual_k,
                     y=y,
                     rng=rng,
-                    traj_steps=traj_num_panels if need_more_traj else 0,
-                    particles_for_traj=particles_for_traj if need_more_traj else 0,
+                    traj_steps=0,
+                    particles_for_traj=0,
                 )
 
             x0_bk = out.x0.detach().cpu()
@@ -140,32 +129,9 @@ def run_particle_sweep_experiment(
 
             pooled_samples.append(x0_bk)
 
-            if need_more_traj:
-                smc_info = out.info["smc"]
-                traj_chunk = smc_info.traj.detach().cpu()  # expected shape: (T+1, B, K_traj, D)
-
-                if traj_y_index < 0 or traj_y_index >= traj_chunk.shape[1]:
-                    raise IndexError(
-                        f"trajectory.y_index={traj_y_index} is out of range "
-                        f"for trajectory tensor with B={traj_chunk.shape[1]}."
-                    )
-
-                traj_chunk_y = traj_chunk[:, traj_y_index]  # (T+1, K_traj, D)
-                traj_chunks.append(traj_chunk_y)
-
-                traj_times = smc_info.traj_times.detach().cpu()
-                collected_traj_particles += traj_chunk_y.shape[1]
-
         samples_bk = torch.cat(pooled_samples, dim=1)[:, :target_total_particles]
 
         trajectory_payload = None
-        if traj_chunks:
-            traj = torch.cat(traj_chunks, dim=1)[:, :traj_num_points]  # (T+1, K_plot, D)
-            trajectory_payload = {
-                "y_index": traj_y_index,
-                "traj": traj,
-                "traj_times": traj_times,
-            }
 
         posterior_overlay_payload = None
         if posterior_overlay_particles_bk is not None:
