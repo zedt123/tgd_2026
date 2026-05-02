@@ -48,35 +48,35 @@ algorithms:
     sweep_value: 256
     selection_rule: first
     overrides:
-      - sampler=images/pr/mcmc_atgd_stop_05
+      - sampler=images/ip/mpgd_atgd_stop_05
   - name: A-TGD-2
     sweep_kind: atgd
     num_particles: 2
     sweep_value: 256
     selection_rule: first
     overrides:
-      - sampler=images/pr/mcmc_atgd_stop_05
+      - sampler=images/ip/mpgd_atgd_stop_05
   - name: A-TGD-4
     sweep_kind: atgd
     num_particles: 4
     sweep_value: 256
     selection_rule: first
     overrides:
-      - sampler=images/pr/mcmc_atgd_stop_05
+      - sampler=images/ip/mpgd_atgd_stop_05
   - name: A-TGD-8
     sweep_kind: atgd
     num_particles: 8
     sweep_value: 256
     selection_rule: first
     overrides:
-      - sampler=images/pr/mcmc_atgd_stop_05
+      - sampler=images/ip/mpgd_atgd_stop_05
   - name: A-TGD-16
     sweep_kind: atgd
     num_particles: 16
     sweep_value: 256
     selection_rule: first
     overrides:
-      - sampler=images/pr/mcmc_atgd_stop_05
+      - sampler=images/ip/mpgd_atgd_stop_05
 
 outputs:
   root_config_yaml: results_config.yaml

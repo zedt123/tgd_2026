@@ -19,7 +19,6 @@ eval:
   dist_metric_kwargs: {}
 
 defaults:
-  - /run: base
   - /data: ffhq
   - /model: ffhq256
   - /sampler: images/pr/mcmc_atgd_stop_05      # overwritten below

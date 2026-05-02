@@ -19,7 +19,7 @@ defaults:
   - /data: ffhq
   - /model: ffhq256
   - /sampler: images/pr/mcmc_atgd_stop_05.yaml
-  - /operator: large_resolution/phase_retrieval
+  - /operator: phase_retrieval
   - _self_
 
 run:
