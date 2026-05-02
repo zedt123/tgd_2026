@@ -232,7 +232,6 @@ def _evaluate_selected_outputs(
             meta=None,
             run_paired=True,
             run_dist=False,
-            run_smc=False,
         )
     finally:
         evaluator.reset_batch()
