@@ -1,0 +1,114 @@
+# @package _global_
+
+out_dir: results/ffhq_pr/plots
+device: cuda
+save_images: false
+save_traj: false
+
+eval:
+  reduce_k: "measurement_best"   # fallback default; per-variant reduce_k will override this
+  store_per_condition: false
+
+  paired_metrics: ["psnr", "lpips"]
+  paired_metric_kwargs:
+    lpips:
+      batch_size: 64
+    psnr:
+      data_range: 1.0
+
+  dist_metrics: []
+  dist_metric_kwargs: {}
+
+defaults:
+  - /data: ffhq
+  - /model: ffhq256
+  - /sampler: ffhq/mpgd_tgd # fallback default; sampler-specific value below overrides this
+  - /operator: phase_retrieval
+  - _self_
+
+run:
+  total_data: 100
+  num_particles: 4      # fallback default; sampler-specific value below overrides this
+  batch_size: 16
+  device: cuda
+  seed: 3
+  save_traj: false
+  traj_steps: 1
+  particles_to_save: 1
+
+samplers:
+  - name: DPS
+    sweep_kind: mpgd         
+    num_particles: 1
+    sweep_values: [52, 80, 156, 308, 608, 1216]
+    curve_sweep_value: 1184
+    eval_variants:
+      - name: k1
+        use_particles: 1
+        reduce_k: mean
+        time_mode: full
+    overrides:
+      - sampler=ffhq/dps_daps       
+  - name: A-TGD
+    sweep_kind: atgd
+    num_particles: 4
+    sweep_values: [36, 64, 128, 256, 512, 1024]    
+    curve_sweep_value: 1024
+    eval_variants:
+      - name: k4
+        use_particles: 1
+        reduce_k: mean
+        time_mode: full
+    overrides:
+      - sampler=ffhq/mpgd_atgd       
+  - name: DAPS
+    sweep_kind: outer_inner
+    num_particles: 1
+    sweep_values: [76, 124, 244, 484, 972, 1928]
+    curve_sweep_value: 1928
+    eval_variants:
+      - name: k1
+        use_particles: 1
+        reduce_k: mean
+        time_mode: full
+    overrides:
+      - sampler=ffhq/mcmc_daps     
+
+  - name: DAPS
+    sweep_kind: outer_inner
+    num_particles: 4
+    sweep_values: [20, 32, 64, 124, 252, 496]
+    curve_sweep_value: 496
+    eval_variants:
+      - name: k4_measurement_best
+        use_particles: 4
+        reduce_k: measurement_best
+        time_mode: full
+    overrides:
+      - sampler=ffhq/mcmc_daps      
+
+plot:
+  xscale: log
+  x_jitter: 0.0
+  error_bars: 2std          # minmax | 2std | none
+
+report:
+  summary_stat: mean          # mean | median
+
+threshold_curves:
+  num_thresholds: 400
+
+outputs:
+  partial_json: sampler_compare_time_partial.json
+  summary_json: sampler_compare_time_summary.json
+  table_txt: sampler_compare_time_table.txt
+
+  lpips_time_svg: time_vs_lpips.svg
+  psnr_time_svg: time_vs_psnr.svg
+  consistency_mse_time_svg: time_vs_consistency_mse.svg
+
+  lpips_threshold_svg: threshold_vs_fraction_lpips.svg
+  psnr_threshold_svg: threshold_vs_fraction_psnr.svg
+  consistency_mse_threshold_svg: threshold_vs_fraction_consistency_mse.svg
+
+  root_config_yaml: ablation_time_config.yaml

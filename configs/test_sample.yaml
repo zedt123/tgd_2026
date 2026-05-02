@@ -1,0 +1,44 @@
+# @package _global_
+
+out_dir: results/test_samples/ffhq_samples
+save_images: true
+save_traj: true
+
+# Optional explicit image selection after loading the dataset.
+# If null, use the first run.total_data images.
+# Example: [2, 21, 25]
+image_indices: null
+
+# Visualization options for the per-image PNG panels.
+visualization:
+  save_panels: true
+  show_metrics: true
+  panel_dpi: 160
+
+defaults:
+  - /data: ffhq
+  - /model: ffhq256
+  - /sampler: /images/pr/mcmc_atgd_stop_05.yaml
+  - /operator: large_resolution/phase_retrieval
+  - _self_
+
+run:
+  total_data: 3
+  num_particles: 4
+  batch_size: 16
+  device: cuda
+  seed: 3
+  save_traj: true
+  traj_steps: 15
+  particles_to_save: 3
+
+eval:
+  paired_metrics: ["psnr", "lpips", "ssim"]
+  paired_metric_kwargs:
+    lpips:
+      batch_size: 64
+    psnr:
+      data_range: 1.0
+
+  dist_metrics: []
+  dist_metric_kwargs: {}

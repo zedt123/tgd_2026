@@ -1,0 +1,82 @@
+# @package _global_
+
+out_dir: results/2d_plots
+run:
+  device: cpu
+  seed: 5
+  total_data: 10
+  batch_size: 100000
+  num_particles: 1
+
+data:
+  name: toy2d
+  kwargs: {}
+
+eval:
+  reduce_k: mean
+  store_per_condition: false
+
+  dist_metrics: ["swd"]
+  dist_metric_kwargs:
+    swd:
+      n_projections: 100
+
+model:
+  name: analytic
+  model_config:
+    mog:
+      N: 5 
+      tau: 0.005 
+      mean_margin: 0.10
+
+operator:
+  name: abs
+  kwargs:
+    sigma: 0.01 
+    strength: 0.8
+  proposal: time_proposal 
+
+# study:
+  particle_counts: [1, 2, 4, 8, 16, 32, 64, 128] 
+  target_total_particles: 10000
+  gt_reference_samples: 20000 
+  table_num_particles: 4
+
+  # Speed hack for the K=1 datapoint
+  k1_hack:
+    enabled: true
+    actual_particles: 128
+    ess_threshold: 0.0
+
+  posterior_overlay:
+    enabled: true
+    algorithm: tgd
+    num_particles: 64
+
+    # Prior context samples used only for plotting.
+    prior_reference_samples: 20000
+
+    # KDE / contour settings.
+    max_prior_samples: 10000
+    max_posterior_samples: 10000
+    grid_size_global: 220
+    grid_size_zoom: 220
+    prior_kde_bandwidth: 0.035
+    posterior_kde_bandwidth: 0.018
+
+    # The global panel uses prior limits.
+    global_padding_frac: 0.10
+
+    # The local panel zooms around posterior + particles.
+    zoom_padding_frac: 0.25
+
+    output_formats: ["svg", "pdf"]
+
+defaults:
+  - /sampler: 2d/tgd
+  - _self_
+
+sampler_overrides:
+  - sampler=2d/tgd
+  - sampler=2d/dps
+  - sampler=2d/dps_daps

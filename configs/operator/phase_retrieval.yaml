@@ -1,0 +1,6 @@
+name: phase_retrieval
+kwargs:
+  resolution: 256
+  sigma: 0.05
+  strength: 0.4
+proposal: time_proposal

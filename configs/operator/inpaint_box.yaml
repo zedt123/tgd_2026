@@ -1,0 +1,8 @@
+name: inpainting
+kwargs:
+  mask_type: box
+  box_shape: [128, 128]
+  margin: [32, 32]
+  sigma: 0.05
+  strength: 0.7
+proposal: time_proposal
