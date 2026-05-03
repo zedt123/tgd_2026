@@ -44,7 +44,7 @@ pick:
 algorithms:
   - name: A-TGD-U
     sweep_kind: atgd
-    num_particles: 2
+    num_particles: 4
     sweep_value: 256
     selection_rule: first
     overrides:
@@ -58,14 +58,14 @@ algorithms:
       - sampler=images_extra/mpgd_atgd_stop_05_s05
   - name: A-TGD-S-1
     sweep_kind: atgd
-    num_particles: 1
+    num_particles: 4
     sweep_value: 256
     selection_rule: first
     overrides:
       - sampler=images_extra/mpgd_atgd_stop_05_s1
   - name: A-TGD-S-2
     sweep_kind: atgd
-    num_particles: 2
+    num_particles: 4
     sweep_value: 256
     selection_rule: first
     overrides:

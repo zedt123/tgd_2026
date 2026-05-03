@@ -1,7 +1,7 @@
 name: atgd
 kwargs:
   ess_threshold: 1.0
-  stop: 0.0
+  stop: 1.0
 
 process_schedule:
   name: edm
