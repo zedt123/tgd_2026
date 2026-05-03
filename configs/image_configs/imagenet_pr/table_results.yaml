@@ -19,8 +19,8 @@ eval:
   dist_metric_kwargs: {}
 
 defaults:
-  - /data: ffhq
-  - /model: ffhq256
+  - /data: imagenet
+  - /model: imagenet256
   - /sampler: images/pr/mcmc_atgd_stop_08      # overwritten below
   - /operator: phase_retrieval
   - _self_

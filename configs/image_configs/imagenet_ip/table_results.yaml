@@ -19,8 +19,8 @@ eval:
   dist_metric_kwargs: {}
 
 defaults:
-  - /data: ffhq
-  - /model: ffhq256
+  - /data: imagenet
+  - /model: imagenet256
   - /sampler: images/ip/mpgd_atgd_stop_05          # overwritten below
   - /operator: inpaint_box
   - _self_
