@@ -1,0 +1,69 @@
+# @package _global_
+
+out_dir: results/ablations/ffhq_ip/reconstruction
+device: cuda
+save_images: false
+save_traj: false
+
+eval:
+  paired_metrics: ["psnr", "lpips", "ssim"]
+  paired_metric_kwargs:
+    lpips:
+      batch_size: 64
+    psnr:
+      data_range: 1.0
+    consistency_mse:
+      reduction: mean
+
+  dist_metrics: []
+  dist_metric_kwargs: {}
+
+defaults:
+  - /data: ffhq
+  - /model: ffhq256
+  - /sampler: images/ip/mpgd_atgd_stop_05          # overwritten below
+  - /operator: inpaint_box
+  - _self_
+
+run:
+  total_data: 100
+  num_particles: 1      # fallback default; algorithm-specific values below can override this
+  batch_size: 16
+  device: cuda
+  seed: 3
+  save_traj: false
+  traj_steps: 1
+  particles_to_save: 1
+
+pick:
+  top_k: 10
+  rank_metric: lpips                  # lpips | psnr
+  rank_pair: ["A-TGD-MCMC", "A-TGD-MPGD"]      # names of the two algorithms used to rank images
+  gap_mode: abs                       # check both sides
+
+algorithms:
+  - name: A-TGD-DPS
+    sweep_kind: atgd
+    num_particles: 4
+    sweep_value: 256
+    selection_rule: first
+    overrides:
+      - sampler=images_extra/dps_atgd_stop_05
+  - name: A-TGD-MCMC
+    sweep_kind: atgd
+    num_particles: 4
+    sweep_value: 256
+    selection_rule: first
+    overrides:
+      - sampler=images_extra/mcmc_atgd_stop_05
+  - name: A-TGD-MPGD
+    sweep_kind: atgd
+    num_particles: 4
+    sweep_value: 256
+    selection_rule: first
+    overrides:
+      - sampler=images_extra/mpgd_atgd_stop_05
+
+outputs:
+  root_config_yaml: results_config.yaml
+  summary_json: results_summary.json
