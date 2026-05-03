@@ -28,7 +28,7 @@ from src.models.utils import count_parameters
 from src.seed import make_rng
 
 
-@hydra.main(version_base=None, config_path="../configs", config_name="ablations/ffhq/sampler_compare_time_daps_mcmc")
+@hydra.main(version_base=None, config_path="../configs", config_name="image_configs/ffhq_pr/time_sweep")
 def main(cfg: DictConfig) -> None:
     out_dir = Path(to_absolute_path(str(cfg.out_dir)))
     out_dir.mkdir(parents=True, exist_ok=True)

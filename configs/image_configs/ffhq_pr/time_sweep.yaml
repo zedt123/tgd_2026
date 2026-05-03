@@ -40,52 +40,52 @@ samplers:
   - name: DPS
     sweep_kind: mpgd         
     num_particles: 1
-    sweep_values: [52, 80, 156, 308, 608, 1216]
-    curve_sweep_value: 1184
+    sweep_values: [68, 104, 204, 404, 800, 1592]
+    curve_sweep_value: 404
     eval_variants:
       - name: k1
         use_particles: 1
         reduce_k: mean
         time_mode: full
     overrides:
-      - sampler=ffhq/dps_daps       
+      - sampler=images/dps   
   - name: A-TGD
     sweep_kind: atgd
     num_particles: 4
     sweep_values: [36, 64, 128, 256, 512, 1024]    
-    curve_sweep_value: 1024
+    curve_sweep_value: 256
     eval_variants:
       - name: k4
         use_particles: 1
         reduce_k: mean
         time_mode: full
     overrides:
-      - sampler=ffhq/mpgd_atgd       
+      - sampler=images/pr/mcmc_atgd_stop_05       
   - name: DAPS
     sweep_kind: outer_inner
     num_particles: 1
-    sweep_values: [76, 124, 244, 484, 972, 1928]
-    curve_sweep_value: 1928
+    sweep_values: [104, 168, 324, 636, 1260, 2512]
+    curve_sweep_value: 636
     eval_variants:
       - name: k1
         use_particles: 1
         reduce_k: mean
         time_mode: full
     overrides:
-      - sampler=ffhq/mcmc_daps     
+      - sampler=images/daps     
 
   - name: DAPS
     sweep_kind: outer_inner
     num_particles: 4
-    sweep_values: [20, 32, 64, 124, 252, 496]
-    curve_sweep_value: 496
+    sweep_values: [28, 44, 84, 164, 324, 648]
+    curve_sweep_value: 164
     eval_variants:
       - name: k4_measurement_best
         use_particles: 4
         reduce_k: measurement_best
         time_mode: full
     overrides:
-      - sampler=ffhq/mcmc_daps      
+      - sampler=images/daps      
 
 plot:
   xscale: log
