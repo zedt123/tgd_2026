@@ -80,13 +80,6 @@ model_weights/ffhq_10m.pt
 model_weights/imagenet256.pt
 ```
 
-For example:
-
-```bash
-mv {DOWNLOAD_DIR}/ffhq_10m.pt model_weights/ffhq_10m.pt
-mv {DOWNLOAD_DIR}/imagenet256.pt model_weights/imagenet256.pt
-```
-
 ## Running experiments
 
 All experiment outputs are saved under:
