@@ -46,21 +46,21 @@ algorithms:
     sweep_kind: atgd
     num_particles: 4
     sweep_value: 256
-    selection_rule: first
+    selection_rule: measurement_best
     overrides:
       - sampler=images_extra/mpgd_atgd_stop_10_u
   - name: A-TGD-No-Anneal
     sweep_kind: atgd
     num_particles: 4
     sweep_value: 256
-    selection_rule: first
+    selection_rule: measurement_best
     overrides:
       - sampler=images_extra/mpgd_atgd_stop_10
   - name: A-TGD-Anneal
     sweep_kind: atgd
     num_particles: 4
     sweep_value: 256
-    selection_rule: first
+    selection_rule: measurement_best
     overrides:
       - sampler=images_extra/mpgd_atgd_stop_10_a
 

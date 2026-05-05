@@ -50,18 +50,10 @@ algorithms:
     overrides:
       - sampler=images/pr/mcmc_atgd_stop_08
 
-  - name: DPS
-    sweep_kind: mpgd                 
-    num_particles: 1
-    sweep_value: 7860
-    selection_rule: first             # first | measurement_best | best_lpips | best_psnr
-    overrides:
-      - sampler=images/dps
-
   - name: DAPS
     sweep_kind: outer_inner
     num_particles: 1
-    sweep_value: 15420
+    sweep_value: 16884
     selection_rule: first
     overrides:
       - sampler=images/daps
@@ -69,10 +61,17 @@ algorithms:
   - name: DAPS-4
     sweep_kind: outer_inner
     num_particles: 4
-    sweep_value: 4300
+    sweep_value: 4196
     selection_rule: measurement_best
     overrides:
       - sampler=images/daps  
+  - name: DPS
+    sweep_kind: mpgd                 
+    num_particles: 1
+    sweep_value: 8416
+    selection_rule: first             # first | measurement_best | best_lpips | best_psnr
+    overrides:
+      - sampler=images/dps
 
 outputs:
   root_config_yaml: results_config.yaml
